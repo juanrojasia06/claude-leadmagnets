@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Estrategia de Contenido con IA — Momentum</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C0392B;
+    --red-dark: #922B21;
+    --red-glow: rgba(192, 57, 43, 0.15);
+    --bg: #111111;
+    --bg-card: #191919;
+    --bg-card2: #222222;
+    --text: #F0EDE8;
+    --muted: #888880;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .logo svg { width: 28px; height: 28px; }
+
+  .logo-word {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 4px;
+    color: var(--text);
+  }
+
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s ease forwards;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 8vw, 56px);
+    line-height: 1.05;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s ease forwards;
+  }
+
+  h1 span { color: var(--red); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s ease forwards;
+  }
+
+  /* INTRO */
+  .intro {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s ease forwards;
+  }
+
+  .intro p {
+    font-size: 15px;
+    color: var(--muted);
+    border-left: 2px solid var(--red);
+    padding-left: 1.25rem;
+    line-height: 1.8;
+  }
+
+  /* STEPS */
+  .steps-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.45s ease forwards;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.5s; }
+  .step:nth-child(2) { animation-delay: 0.6s; }
+  .step:nth-child(3) { animation-delay: 0.7s; }
+
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--red-glow);
+    border: 1px solid var(--red-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--red);
+    flex-shrink: 0;
+  }
+
+  .step-line {
+    width: 1px;
+    flex: 1;
+    min-height: 24px;
+    background: linear-gradient(to bottom, var(--red-dark), transparent);
+    margin-top: 8px;
+  }
+
+  .step:last-child .step-line { display: none; }
+
+  .step-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .step-card:hover { border-color: rgba(192,57,43,0.3); }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+
+  .step-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tool {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .tool.accent {
+    border-color: var(--red-dark);
+    color: #E07070;
+    background: rgba(192,57,43,0.08);
+  }
+
+  /* RESULT */
+  .result-section {
+    margin: 3rem 0;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s ease forwards;
+  }
+
+  .result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .result-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 480px) {
+    .result-grid { grid-template-columns: 1fr; }
+  }
+
+  .result-item {
+    background: var(--bg-card2);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+  }
+
+  .result-item .r-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .result-item .r-label {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* CTA */
+  .cta-section {
+    margin: 3rem 0 4rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.9s ease forwards;
+  }
+
+  .cta-card {
+    background: var(--red-glow);
+    border: 1px solid var(--red-dark);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .cta-card p {
+    font-size: 14px;
+    color: #E07070;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+  }
+
+  .cta-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #E07070;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .cta-keyword {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 6px;
+    color: var(--text);
+    display: block;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-by {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .cta-by strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.6s 1s ease forwards;
+  }
+
+  footer span { color: var(--red); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 26L16 6L26 26" stroke="#C0392B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9.5 20H22.5" stroke="#C0392B" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-word">MOMENTUM</span>
+    </div>
+    <p class="hero-label">Guía práctica</p>
+    <h1>Crea tu estrategia de contenido con <span>IA</span> en 30 minutos</h1>
+    <p class="hero-sub">Antes de pedirle ideas a Claude, necesitas darle contexto real. Así es como se hace.</p>
+  </header>
+
+  <div class="intro">
+    <p>El error que comete la mayoría es pedirle ideas a la IA sin darle contexto real — por eso el resultado es genérico y no convierte. Lo que necesitas construir primero son tres documentos base.</p>
+  </div>
+
+  <p class="steps-label">Los 3 documentos</p>
+
+  <div class="steps-container">
+
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">1</div>
+        <div class="step-line"></div>
+      </div>
+      <div>
+        <div class="step-card">
+          <div class="step-title">Documento de referentes</div>
+          <div class="step-desc">Identifica los 3 a 5 creadores top de tu nicho. Usa NotebookLM para extraer y analizar sus videos de YouTube — hooks, estructura, formatos, por qué la gente los sigue. Luego súbelo a Claude y dile que se convierta en un experto en ese estilo de contenido.</div>
+          <div class="tools">
+            <span class="tool accent">NotebookLM</span>
+            <span class="tool accent">Claude</span>
+            <span class="tool">YouTube</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">2</div>
+        <div class="step-line"></div>
+      </div>
+      <div>
+        <div class="step-card">
+          <div class="step-title">Documento de contexto propio</div>
+          <div class="step-desc">Crea un documento muy específico con quién eres tú, qué ofreces, a quién le hablas y qué resultado entrega tu servicio. Si tienes grabaciones de llamadas de venta, transcríbelas y agrégalas — Claude va a entender el dolor de tu cliente desde sus propias palabras, no desde suposiciones.</div>
+          <div class="tools">
+            <span class="tool accent">Claude</span>
+            <span class="tool">Transcripciones de llamadas</span>
+            <span class="tool">ICP + Oferta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">3</div>
+        <div class="step-line"></div>
+      </div>
+      <div>
+        <div class="step-card">
+          <div class="step-title">Marco estratégico</div>
+          <div class="step-desc">Sube a Claude documentos de estrategia de contenido y marca personal para que entienda cómo posicionarte dentro de tu mercado. Esto es lo que hace que el contenido generado tenga dirección y no sea solo información aleatoria. Con los tres documentos listos, pídele 20 ideas — 10 para crecer, 10 para convertir.</div>
+          <div class="tools">
+            <span class="tool accent">Claude</span>
+            <span class="tool">Estrategia de marca</span>
+            <span class="tool">Posicionamiento</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="result-section">
+    <div class="result-card">
+      <h2>Qué obtienes al final</h2>
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="r-num">20</div>
+          <div class="r-label">Ideas listas — 10 para crecer, 10 para convertir</div>
+        </div>
+        <div class="result-item">
+          <div class="r-num">30'</div>
+          <div class="r-label">Tiempo máximo para tener todo armado</div>
+        </div>
+        <div class="result-item">
+          <div class="r-num">0</div>
+          <div class="r-label">Suposiciones — todo desde data real de tu mercado</div>
+        </div>
+        <div class="result-item">
+          <div class="r-num">100%</div>
+          <div class="r-label">Adaptado a tu nicho, tu voz y tu cliente ideal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <div class="cta-card">
+      <span class="cta-tag">¿Quieres hacerlo juntos?</span>
+      <p>Si quieres que armemos esto para tu nicho específico y te ayude a construir los documentos desde cero, escríbeme por DM.</p>
+      <span class="cta-keyword">MOMENTUM</span>
+      <p class="cta-by">DM a <strong>@juanrojas.ia</strong> en Instagram</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>MOMENTUM</span>
+    <span>by @juanrojas.ia</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
