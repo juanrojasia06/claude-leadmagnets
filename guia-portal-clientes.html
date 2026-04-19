@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Clientes — Guía MOMENTUM</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C0392B;--red-dim:rgba(192,57,43,0.1);--red-border:rgba(192,57,43,0.3);
+  --green:#27AE60;--green-dim:rgba(39,174,96,0.1);
+  --amber:#F39C12;--amber-dim:rgba(243,156,18,0.1);
+  --bg:#0D0D0D;--card:#161616;--card2:#1E1E1E;
+  --text:#E8E4DC;--muted:#555;--border:rgba(255,255,255,0.06);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 0%,rgba(192,57,43,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+.wrap{max-width:720px;margin:0 auto;padding:0 1.5rem 3rem;position:relative;z-index:1}
+
+header{padding:2.5rem 0 2rem;border-bottom:1px solid var(--border);margin-bottom:2rem;opacity:0;animation:fadeUp .5s .1s ease forwards}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.75rem}
+.logo{display:flex;align-items:center;gap:8px}
+.logo svg{width:24px;height:24px}
+.logo-word{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px}
+.tag{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);border:1px solid var(--border);padding:4px 10px;border-radius:20px;letter-spacing:1px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,7vw,46px);letter-spacing:1px;line-height:1;margin-bottom:.5rem}
+h1 span{color:var(--red)}
+.subtitle{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace}
+
+.intro{margin-bottom:2rem;opacity:0;animation:fadeUp .5s .2s ease forwards}
+.intro p{font-size:15px;color:var(--muted);border-left:2px solid var(--red);padding-left:1.25rem;line-height:1.8}
+
+.section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-family:'DM Mono',monospace}
+
+/* PROBLEM */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem;opacity:0;animation:fadeUp .5s .3s ease forwards}
+.prob-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem}
+.prob-card.before{border-color:var(--red-border)}
+.prob-card.after{border-color:rgba(39,174,96,0.3)}
+.prob-tag{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:.6rem}
+.prob-tag.red{color:var(--red)}
+.prob-tag.green{color:var(--green)}
+.prob-item{font-size:12px;color:var(--muted);margin-bottom:.4rem;line-height:1.5}
+.prob-item::before{content:'— ';color:var(--muted)}
+.prob-item.green-text{color:var(--green)}
+.prob-item.green-text::before{content:'✓ ';color:var(--green)}
+
+/* TOOLS */
+.tools-row{display:flex;gap:8px;margin-bottom:2rem;flex-wrap:wrap;opacity:0;animation:fadeUp .5s .35s ease forwards}
+.tool-pill{font-size:12px;padding:6px 14px;border-radius:20px;font-family:'DM Mono',monospace}
+.tool-pill.accent{border:1px solid var(--red-border);color:#E07070;background:var(--red-dim)}
+.tool-pill.gray{border:1px solid var(--border);color:var(--muted);background:var(--card)}
+
+/* PREVIEW */
+.preview-wrap{position:relative;margin-bottom:2rem;opacity:0;animation:fadeUp .5s .4s ease forwards}
+.preview-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.preview-header{padding:.9rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.preview-header span{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.deploy-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:5px}
+.stats-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.stat-mini{background:var(--card);padding:.9rem 1rem}
+.sm-val{font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1;margin-bottom:.2rem}
+.sm-val.white{color:var(--text)}
+.sm-val.green{color:var(--green)}
+.sm-val.gold{color:#F0C040}
+.sm-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:.65rem 1.25rem;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:.8rem 1.25rem;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.03)}
+tr:last-child td{border-bottom:none}
+.client-name{font-size:13px;color:var(--text)}
+.client-type{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-family:'DM Mono',monospace}
+.badge.active{background:var(--green-dim);color:var(--green);border:1px solid rgba(39,174,96,0.3)}
+.badge.pending{background:rgba(255,255,255,0.03);color:var(--muted);border:1px solid var(--border)}
+.phase{font-size:11px;font-family:'DM Mono',monospace}
+.phase.s1{color:var(--red)}
+.phase.s3{color:var(--amber)}
+.phase.s5{color:var(--green)}
+.health-bar{width:50px;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.hf.high{background:var(--green);width:100%;height:100%}
+.hf.mid{background:var(--amber);width:65%;height:100%}
+.hf.low{background:var(--red);width:30%;height:100%}
+.blur-overlay{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:2;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.75rem}
+.blur-text{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px}
+
+.benefits{margin-bottom:2rem;opacity:0;animation:fadeUp .5s .55s ease forwards}
+.benefit-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:.75rem}
+.b-dot{width:5px;height:5px;min-width:5px;border-radius:50%;background:var(--red);margin-top:8px}
+.b-text{font-size:14px;color:var(--muted);line-height:1.6}
+
+.cta{background:var(--red-dim);border:1px solid var(--red-border);border-radius:16px;padding:2.5rem 2rem;text-align:center;margin-bottom:2rem;opacity:0;animation:fadeUp .5s .65s ease forwards}
+.cta-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,6vw,40px);letter-spacing:1px;margin-bottom:.75rem}
+.cta-desc{font-size:14px;color:var(--muted);margin-bottom:1.5rem;line-height:1.7}
+.cta-keyword{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:6px;color:var(--text);display:block;margin-bottom:.5rem}
+.cta-handle{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace}
+.cta-handle strong{color:var(--red)}
+
+footer{border-top:1px solid var(--border);padding:1.5rem 0;display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;opacity:0;animation:fadeUp .5s .75s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:540px){.problem-grid{grid-template-columns:1fr}.stats-mini{grid-template-columns:1fr 1fr}th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="top-bar">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 20L12 4L19 20" stroke="#C0392B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 14H16" stroke="#C0392B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="logo-word">MOMENTUM</span>
+      </div>
+      <span class="tag">GUÍA</span>
+    </div>
+    <h1>PORTAL DE <span>CLIENTES</span> CON CLAUDE CODE</h1>
+    <p class="subtitle">Un solo lugar para gestionar todo tu programa</p>
+  </header>
+
+  <div class="intro">
+    <p>Tenía clientes en Notion, pagos en otra herramienta, planes de acción en otra hoja. Todo regado. Construí esto para tenerlo todo en un solo lugar — y lo hice yo solo con Claude Code.</p>
+  </div>
+
+  <p class="section-label">El problema que resuelve</p>
+  <div class="problem-grid">
+    <div class="prob-card before">
+      <div class="prob-tag red">Antes</div>
+      <div class="prob-item">Clientes regados en 4 herramientas</div>
+      <div class="prob-item">Sin visibilidad del progreso real</div>
+      <div class="prob-item">Actualización manual cada semana</div>
+      <div class="prob-item">Sin acceso centralizado para el cliente</div>
+    </div>
+    <div class="prob-card after">
+      <div class="prob-tag green">Ahora</div>
+      <div class="prob-item green-text">Panel admin en tiempo real</div>
+      <div class="prob-item green-text">Salud, fase y logros visibles</div>
+      <div class="prob-item green-text">Se actualiza solo</div>
+      <div class="prob-item green-text">Cada cliente con su propio acceso</div>
+    </div>
+  </div>
+
+  <p class="section-label">Construido con</p>
+  <div class="tools-row">
+    <span class="tool-pill accent">Claude Code</span>
+    <span class="tool-pill gray">Render</span>
+    <span class="tool-pill gray">Airtable</span>
+  </div>
+
+  <p class="section-label">Vista previa del panel admin</p>
+  <div class="preview-wrap">
+    <div class="preview-card">
+      <div class="preview-header">
+        <span><span class="deploy-dot"></span>Deploy activo</span>
+        <span>Panel Admin</span>
+      </div>
+      <div class="stats-mini">
+        <div class="stat-mini"><div class="sm-val white">14</div><div class="sm-label">Total clientes</div></div>
+        <div class="stat-mini"><div class="sm-val green">6</div><div class="sm-label">Activos</div></div>
+        <div class="stat-mini"><div class="sm-val white">3</div><div class="sm-label">Prospectos</div></div>
+        <div class="stat-mini"><div class="sm-val gold">$38K</div><div class="sm-label">Contratos</div></div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Estado</th>
+            <th>Fase</th>
+            <th>Salud</th>
+            <th>Login</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="client-name">Mentor A</div><div class="client-type">Coach de negocios</div></td>
+            <td><span class="badge active">Activo</span></td>
+            <td><span class="phase s1">S1 — Diagnóstico</span></td>
+            <td><div class="health-bar"><div class="hf high"></div></div></td>
+            <td style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text)">Hoy</td>
+          </tr>
+          <tr>
+            <td><div class="client-name">Dueño de negocio B</div><div class="client-type">Cursos online</div></td>
+            <td><span class="badge active">Activo</span></td>
+            <td><span class="phase s3">S3 — Implementación</span></td>
+            <td><div class="health-bar"><div class="hf mid"></div></div></td>
+            <td style="font-size:11px;font-family:'DM Mono',monospace;color:var(--amber)">Hace 8d</td>
+          </tr>
+          <tr>
+            <td><div class="client-name">Consultor C</div><div class="client-type">Mentoría 1:1</div></td>
+            <td><span class="badge active">Activo</span></td>
+            <td><span class="phase s5">S5 — Escala</span></td>
+            <td><div class="health-bar"><div class="hf low"></div></div></td>
+            <td style="font-size:11px;font-family:'DM Mono',monospace;color:var(--red)">Nunca</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="blur-overlay"><span class="blur-text">· · · más clientes y métricas · · ·</span></div>
+  </div>
+
+  <p class="section-label">Qué obtienes</p>
+  <div class="benefits">
+    <div class="benefit-item"><div class="b-dot"></div><p class="b-text">Un panel central con todos tus clientes y su estado en tiempo real</p></div>
+    <div class="benefit-item"><div class="b-dot"></div><p class="b-text">Cada cliente con su propio portal personalizado con acceso propio</p></div>
+    <div class="benefit-item"><div class="b-dot"></div><p class="b-text">Visibilidad de salud, fase, SOPs y logros sin abrir nada más</p></div>
+    <div class="benefit-item"><div class="b-dot"></div><p class="b-text">Construido con Claude Code — sin contratar un desarrollador</p></div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-eyebrow">¿Lo quieres en tu negocio?</div>
+    <div class="cta-title">Te lo construimos nosotros</div>
+    <p class="cta-desc">Tu propio portal de clientes, deployado y funcionando.<br>Sin herramientas regadas. Todo centralizado.</p>
+    <span class="cta-keyword">MOMENTUM</span>
+    <p class="cta-handle">DM a <strong>@juanrojas.ia</strong> en Instagram</p>
+  </div>
+
+  <footer>
+    <span>MOMENTUM © 2026</span>
+    <span>by @juanrojas.ia</span>
+  </footer>
+</div>
+</body>
+</html>
